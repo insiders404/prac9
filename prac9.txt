@@ -1,0 +1,100 @@
+Q.1) Write a program to store and display Graph data structure using adjacency matrix in python.
+class Graph(object):
+
+    # Initialize the matrix
+    def __init__(self, size):
+        self.adjMatrix = []
+        for i in range(size):
+            self.adjMatrix.append([0 for i in range(size)])
+        self.size = size
+
+    # Add edges
+    def add_edge(self, v1, v2):
+        if v1 == v2:
+            print("Same vertex %d and %d" % (v1, v2))
+        self.adjMatrix[v1][v2] = 1
+        self.adjMatrix[v2][v1] = 1
+
+    # Remove edges
+    def remove_edge(self, v1, v2):
+        if self.adjMatrix[v1][v2] == 0:
+            print("No edge between %d and %d" % (v1, v2))
+            return
+        self.adjMatrix[v1][v2] = 0
+        self.adjMatrix[v2][v1] = 0
+
+    def __len__(self):
+        return self.size
+
+    # Print the matrix
+    def print_matrix(self):
+        for row in self.adjMatrix:
+            for val in row:
+                print('{:4}'.format(val)),
+            print
+
+
+def main():
+    g = Graph(5)
+    g.add_edge(0, 1)
+    g.add_edge(0, 2)
+    g.add_edge(1, 2)
+    g.add_edge(2, 0)
+    g.add_edge(2, 3)
+
+    g.print_matrix()
+
+
+if __name__ == '__main__':
+    main()
+
+Q.2) Write a program to implement Graph traversal(BFS ) in python.
+
+import collections
+
+def bfs(graph, root):
+
+    visited, queue = set(), collections.deque([root])
+    visited.add(root)
+
+    while queue:
+
+        # Dequeue a vertex from queue
+        vertex = queue.popleft()
+        print(str(vertex) + " ", end="")
+
+        # If not visited, mark it as visited, and
+        # enqueue it
+        for neighbour in graph[vertex]:
+            if neighbour not in visited:
+                visited.add(neighbour)
+                queue.append(neighbour)
+
+
+if __name__ == '__main__':
+    graph = {0: [1, 2], 1: [2], 2: [3], 3: [1, 2]}
+    print("Following is Breadth First Traversal: ")
+    bfs(graph, 0)
+
+Q.3) Write a program to implement Graph Traversal (DFS) in python.
+
+
+def dfs(graph, start, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
+
+    print(start)
+
+    for next in graph[start] - visited:
+        dfs(graph, next, visited)
+    return visited
+
+
+graph = {'0': set(['1', '2']),
+         '1': set(['0', '3', '4']),
+         '2': set(['0']),
+         '3': set(['1']),
+         '4': set(['2', '3'])}
+
+dfs(graph, '0')
